@@ -6,7 +6,7 @@ Frontend: Next.js (App Router, Server Components), Tailwind CSS
 
 Backend: Convex (serverless functions + reactive database)
 
-Authentication: NextAuth with JWT, Clerk
+Authentication: Clerk
 
 Styling: Tailwind CSS
 
