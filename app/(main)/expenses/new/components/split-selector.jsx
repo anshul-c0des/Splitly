@@ -87,9 +87,7 @@ const SplitSelector = ({
 
   // Update the percentage splits - no automatic adjustment of other values
   const updatePercentageSplit = (userId, newPercentage) => {
-    const totalOtherPercentage = 100 - newPercentage;
-  
-    // Extract the user to update and the others
+    // Update just this user's percentage and recalculate amount
     const updatedSplits = splits.map((split) => {
       if (split.userId === userId) {
         return {
@@ -98,94 +96,64 @@ const SplitSelector = ({
           amount: (amount * newPercentage) / 100,
         };
       }
-      return { ...split };
+      return split;
     });
-  
-    // Calculate the sum of the other users' current percentages
-    const otherUsers = updatedSplits.filter((split) => split.userId !== userId);
-    const currentOtherTotal = otherUsers.reduce((sum, s) => sum + s.percentage, 0);
-  
-    // Recalculate and redistribute percentages for others
-    const adjustedSplits = updatedSplits.map((split) => {
-      if (split.userId !== userId) {
-        const proportion = currentOtherTotal > 0 ? split.percentage / currentOtherTotal : 1 / otherUsers.length;
-        const adjustedPercentage = proportion * totalOtherPercentage;
-        return {
-          ...split,
-          percentage: adjustedPercentage,
-          amount: (amount * adjustedPercentage) / 100,
-        };
-      }
-      return split; // Return already updated user
-    });
-  
-    setSplits(adjustedSplits);
-  
-    const newTotalAmount = adjustedSplits.reduce((sum, split) => sum + split.amount, 0);
-    const newTotalPercentage = adjustedSplits.reduce((sum, split) => sum + split.percentage, 0);
-  
+
+    setSplits(updatedSplits);
+
+    // Recalculate totals
+    const newTotalAmount = updatedSplits.reduce(
+      (sum, split) => sum + split.amount,
+      0
+    );
+    const newTotalPercentage = updatedSplits.reduce(
+      (sum, split) => sum + split.percentage,
+      0
+    );
+
     setTotalAmount(newTotalAmount);
     setTotalPercentage(newTotalPercentage);
-  
+
+    // Notify parent about the split changes
     if (onSplitsChange) {
-      onSplitsChange(adjustedSplits);
+      onSplitsChange(updatedSplits);
     }
   };
-  
 
   // Update the exact amount splits - no automatic adjustment of other values
-  const updateExactSplit = (userId, newAmountInput) => {
-    const newAmount = parseFloat(newAmountInput) || 0;
-  
-    // Disallow entering an amount greater than total expense
-    if (newAmount > amount) {
-      // Optionally show UI error or toast here
-      toast.error("Cannot add split greater than expense");
-      return;
-    }
-  
-    // Update this user's amount
+  const updateExactSplit = (userId, newAmount) => {
+    const parsedAmount = parseFloat(newAmount) || 0;
+
+    // Update just this user's amount and recalculate percentage
     const updatedSplits = splits.map((split) => {
       if (split.userId === userId) {
         return {
           ...split,
-          amount: newAmount,
-        };
-      }
-      return { ...split };
-    });
-  
-    const remainingAmount = amount - newAmount;
-    const otherUsers = updatedSplits.filter((split) => split.userId !== userId);
-    const currentOtherTotal = otherUsers.reduce((sum, s) => sum + s.amount, 0);
-  
-    const adjustedSplits = updatedSplits.map((split) => {
-      if (split.userId !== userId) {
-        const proportion = currentOtherTotal > 0 ? split.amount / currentOtherTotal : 1 / otherUsers.length;
-        const adjustedAmount = remainingAmount * proportion;
-        return {
-          ...split,
-          amount: adjustedAmount,
+          amount: parsedAmount,
+          percentage: amount > 0 ? (parsedAmount / amount) * 100 : 0,
         };
       }
       return split;
     });
-  
-    const finalSplits = adjustedSplits.map((split) => ({
-      ...split,
-      percentage: (split.amount / amount) * 100,
-    }));
-  
-    setSplits(finalSplits);
-  
-    const newTotalAmount = finalSplits.reduce((sum, split) => sum + split.amount, 0);
-    const newTotalPercentage = finalSplits.reduce((sum, split) => sum + split.percentage, 0);
-  
+
+    setSplits(updatedSplits);
+
+    // Recalculate totals
+    const newTotalAmount = updatedSplits.reduce(
+      (sum, split) => sum + split.amount,
+      0
+    );
+    const newTotalPercentage = updatedSplits.reduce(
+      (sum, split) => sum + split.percentage,
+      0
+    );
+
     setTotalAmount(newTotalAmount);
     setTotalPercentage(newTotalPercentage);
-  
+
+    // Notify parent about the split changes
     if (onSplitsChange) {
-      onSplitsChange(finalSplits);
+      onSplitsChange(updatedSplits);
     }
   };
   

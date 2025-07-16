@@ -20,6 +20,7 @@ import ParticipantSelector from './participant-selector'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import SplitSelector from './split-selector'
 import { getAllCategories } from '@/lib/expense-categories'
+import { toast } from 'sonner'
 
 const expenseSchema = z.object({
     description: z.string().min(1, "Description is required"),
@@ -63,7 +64,50 @@ const ExpenseForm = ({type, onSuccess}) => {
   const paidByUserId = watch("paidByUserId");
 
   const onSubmit = async(data) => {
+    try {
+        const amount = parseFloat(data.amount);
 
+        const formattedSplits = splits.map((s) => ({
+            userId: s.userId,
+            amount: s.amount,
+            paid: s.userId=== data.paidByUserId
+        }));
+
+        const totalSplitAmount = formattedSplits.reduce(
+            (sum, split) => sum +split.amount,
+            0
+        );
+
+        const tolerance = 0.01;
+
+        if(Math.abs(totalSplitAmount-amount) > tolerance){
+            toast.error(`Split amounts don't add upto total, please adjust your splits.`);
+            return;
+        }
+
+        const groupId = type === 'individual' ? undefined : data.groupId;
+
+        await createExpense.mutate({
+            description: data.description,
+            amount: amount,
+            category: data.category | "Other",
+            data: data.date.getTime(),
+            paidByUserId: data.paidByUserId,
+            splitType: data.splitType,
+            splits: formattedSplits,
+            groupId
+        });
+
+        toast.success("Expense created successfully");
+        reset();
+
+        const otherParticipant = participants.find((p)=> p.id !== currentUser._id);
+        const otherUserId = otherParticipant?.id;
+
+        onSuccess(type === 'individual'? otherUserId : groupId)
+    } catch (error) {
+        toast.error("Failed to create expense: "+error.message)
+    }
   }
 
     useEffect(() => {
