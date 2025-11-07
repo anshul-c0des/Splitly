@@ -86,11 +86,12 @@ const ExpenseForm = ({type, onSuccess}) => {
         }
 
         const groupId = type === 'individual' ? undefined : data.groupId;
+        const categoryId = data.category != null ? String(data.category) : "Other";
 
         await createExpense.mutate({
             description: data.description,
             amount: amount,
-            category: data.category != null ? String(data.category) : "Other",
+            category: categoryId,
             date: data.date.getTime(),
             paidByUserId: data.paidByUserId,
             splitType: data.splitType,
@@ -162,7 +163,7 @@ const ExpenseForm = ({type, onSuccess}) => {
                 <Label htmlFor="category">Category</Label>
                 <CategorySelector categories={categories || []} onChange={(categoryId) => {
                     if(categoryId) {
-                        setValue("category", categoryId);
+                        setValue("category", String(categoryId));
                     }
                 }} />
             </div>
