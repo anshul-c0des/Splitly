@@ -25,11 +25,11 @@ import { toast } from 'sonner'
 const expenseSchema = z.object({
     description: z.string().min(1, "Description is required"),
     amount: z.string().min(1, "Amount is required").refine((val) => 
-        !isNaN(parseFloat(val) && parseFloat(val)>0, {
+        !isNaN(parseFloat(val)) && parseFloat(val)>0, {
             message: "Amount cannot be less than zero"
-        })
+        }
     ),
-    category: z.string().optional(),
+    category: z.union([z.string(), z.number()]).optional(),
     date: z.date(),
     paidByUserId: z.string().min(1, "Payer is required"),
     splitType: z.enum(["equal", "peercentage", "exact"]),
@@ -90,7 +90,7 @@ const ExpenseForm = ({type, onSuccess}) => {
         await createExpense.mutate({
             description: data.description,
             amount: amount,
-            category: data.category !== undefined ? String(data.category) : "Other",
+            category: data.category != null ? String(data.category) : "Other",
             date: data.date.getTime(),
             paidByUserId: data.paidByUserId,
             splitType: data.splitType,
