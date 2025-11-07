@@ -134,7 +134,7 @@ const ExpenseList = ({expenses, showOtherPerson=true, isGroupExpense=false, othe
                                 <Badge key={idx} variant={split.paid ? "outline" : "secondary"} className='flex items-center gap-1'>
                                     <Avatar className="h-4 w-4">
                                         <AvatarFallback>
-                                            {splitUser.name?.charAt(0) || "?"}
+                                            {(splitUser?.name || "?").charAt(0)}
                                         </AvatarFallback>
                                     </Avatar>
                                     <span>

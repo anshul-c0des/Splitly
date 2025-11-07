@@ -173,7 +173,7 @@ const SplitSelector = ({
           <div className="flex items-center gap-2 min-w-[120px]">
             <Avatar className="h-7 w-7">
               <AvatarImage src={split.imageUrl} />
-              <AvatarFallback>{split.name?.charAt(0) || "?"}</AvatarFallback>
+              <AvatarFallback>{(split?.name || "?").charAt(0)}</AvatarFallback>
             </Avatar>
             <span className="text-sm">
               {split.userId === user?.id ? "You" : split.name}

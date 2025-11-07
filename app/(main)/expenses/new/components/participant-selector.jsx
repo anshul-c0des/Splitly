@@ -68,7 +68,7 @@ const ParticipantSelector = ({participants, onParticipantsChange}) => {
               <Avatar className="h-5 w-5">
                 <AvatarImage src={participant.imageUrl} />
                 <AvatarFallback>
-                  {participant.name?.charAt(0) || "?"}
+                  {(participant?.name || "A").charAt(0)}
                 </AvatarFallback>
               </Avatar>
               <span>
@@ -135,7 +135,7 @@ const ParticipantSelector = ({participants, onParticipantsChange}) => {
                             <Avatar className="h-6 w-6">
                               <AvatarImage src={user.imageUrl} />
                               <AvatarFallback>
-                                {user.name?.charAt(0) || "?"}
+                                {(user?.name || "?").charAt(0)}
                               </AvatarFallback>
                             </Avatar>
                             <div className="flex flex-col">

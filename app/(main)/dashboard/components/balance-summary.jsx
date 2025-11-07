@@ -30,9 +30,9 @@ const BalanceSummary = ({balances}) => {
                         <div className="flex items-center gap-2">
                             <Avatar className="h-8 w-8">
                                 <AvatarImage src={item.imageUrl} />
-                                <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
+                                <AvatarFallback>{(item?.name || "A").charAt(0)}</AvatarFallback>
                             </Avatar>
-                            <span className="text-sm">{item.name}</span>
+                            <span className="text-sm">{item?.name || "A"}</span>
                         </div>
                         <span className='font-medium text-green-600'>
                             ₹{item.amount.toFixed(2)}
@@ -55,9 +55,9 @@ const BalanceSummary = ({balances}) => {
                         <div className="flex items-center gap-2">
                             <Avatar className="h-8 w-8">
                                 <AvatarImage src={item.imageUrl} />
-                                <AvatarFallback>{item.name.charAt(0)}</AvatarFallback>
+                                <AvatarFallback>{(item?.name || "A").charAt(0)}</AvatarFallback>
                             </Avatar>
-                            <span className="text-sm">{item.name}</span>
+                            <span className="text-sm">{item?.name || "A"}</span>
                         </div>
                         <span className='font-medium text-green-600'>
                             ₹{item.amount.toFixed(2)}

@@ -122,7 +122,7 @@ const CreateGroupModal = ({ isOpen, onClose, onSuccess }) => {
                     <Avatar className="h-5 w-5 mr-2">
                       <AvatarImage src={currentUser.imageUrl} />
                       <AvatarFallback>
-                        {currentUser.name.charAt(0) || "?"}
+                        {(currentUser?.name || "?").charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <span>{currentUser.name} (You)</span>
@@ -135,7 +135,7 @@ const CreateGroupModal = ({ isOpen, onClose, onSuccess }) => {
                     <Avatar className="h-5 w-5 mr-2">
                       <AvatarImage src={member.imageUrl} />
                       <AvatarFallback>
-                        {member.name.charAt(0) || "?"}
+                      {(member?.name || "?").charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <span>{member.name}</span>
@@ -189,7 +189,7 @@ const CreateGroupModal = ({ isOpen, onClose, onSuccess }) => {
                                 <Avatar className="h-6 w-6">
                                   <AvatarImage src={user.imageUrl} />
                                   <AvatarFallback>
-                                    {user.name?.charAt(0) || "?"}
+                                    {(user?.name || "?").charAt(0)}
                                   </AvatarFallback>
                                 </Avatar>
                                 <div className="flex flex-col">

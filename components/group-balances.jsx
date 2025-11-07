@@ -75,7 +75,7 @@ const GroupBalances = ({balances}) => {
                       <Avatar className="h-8 w-8">
                         <AvatarImage src={member.imageUrl} />
                         <AvatarFallback>
-                          {member.name?.charAt(0) ?? "?"}
+                          {(member?.name || "?").charAt(0)}
                         </AvatarFallback>
                       </Avatar>
                       <span className="text-sm">{member.name}</span>
@@ -106,7 +106,7 @@ const GroupBalances = ({balances}) => {
                       <Avatar className="h-8 w-8">
                         <AvatarImage src={member.imageUrl} />
                         <AvatarFallback>
-                          {member.name?.charAt(0) ?? "?"}
+                        {(member?.name || "?").charAt(0)}
                         </AvatarFallback>
                       </Avatar>
                       <span className="text-sm">{member.name}</span>

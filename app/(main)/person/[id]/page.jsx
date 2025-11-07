@@ -49,7 +49,7 @@ const PersonPage = () => {
                     <Avatar className="h-16 w-16">
                         <AvatarImage src={otherUser?.imageUrl} />
                         <AvatarFallback>
-                            {otherUser?.name?.charAt(0) || "?"}
+                            {(otherUser?.name || "?").charAt(0)}
                         </AvatarFallback>
                     </Avatar>
                     <div>
