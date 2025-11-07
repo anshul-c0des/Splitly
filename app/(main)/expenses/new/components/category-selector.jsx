@@ -7,9 +7,10 @@ const CategorySelector = ({categories, onChange}) => {
   const [selectedCategory, setSelectedCategory] = useState("")
   
   const handleCategoryChange = (categoryId) => {
-    setSelectedCategory(categoryId);
-    if(onChange && categoryId !== selectedCategory){
-        onChange(categoryId);
+    const stringId = String(categoryId);
+    setSelectedCategory(stringId);
+    if(onChange && stringId !== selectedCategory){
+        onChange(stringId);
     }
   }
 
@@ -21,7 +22,8 @@ const CategorySelector = ({categories, onChange}) => {
     if(!selectedCategory && categories.length>0){
         const defaultCategory = categories.find((c)=> c.isDefault) || categories[0];
         setTimeout(()=> {
-            setSelectedCategory(defaultCategory.id);
+          const defaultId = String(defaultCategory.id);
+          setSelectedCategory(defaultId);
             if(onChange){
                 onChange(defaultCategory.id);
             }

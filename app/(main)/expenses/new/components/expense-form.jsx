@@ -29,7 +29,7 @@ const expenseSchema = z.object({
             message: "Amount cannot be less than zero"
         }
     ),
-    category: z.union([z.string(), z.number()]).optional(),
+    category: z.string().optional(),
     date: z.date(),
     paidByUserId: z.string().min(1, "Payer is required"),
     splitType: z.enum(["equal", "peercentage", "exact"]),
