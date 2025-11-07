@@ -15,12 +15,17 @@ export default function useStoreUser() {
   const storeUser = useMutation(api.users.store);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || !user) return;
 
     async function createUser() {
       setIsStoring(true);
       try {
-        const id = await storeUser();
+        const id = await storeUser({
+          email: user.emailAddresses[0]?.emailAddress,
+          tokenIdentifier: user.id,
+          ...(user.fullName && { name: user.fullName }),
+          ...(user.profileImageUrl && { imageUrl: user.profileImageUrl }),
+        });
         setUserId(id);
       } catch (err) {
         console.error("Failed to store user:", err);
@@ -32,10 +37,10 @@ export default function useStoreUser() {
     createUser();
 
     return () => setUserId(null);
-  }, [isAuthenticated, storeUser, user?.id]);
+  }, [isAuthenticated, storeUser, user]);
 
   return {
     userId,
-    isLoading: authLoading || isStoring, // 👈 combine auth and store loading
+    isLoading: authLoading || isStoring,
   };
 }

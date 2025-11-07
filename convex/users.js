@@ -18,22 +18,37 @@ export const store = mutation({
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) =>
-        q.eq("tokenIdentifier", identity.tokenIdentifier),
+        q.eq("tokenIdentifier", identity.userId),
       )
       .unique();
+
+      let name = identity.fullName;
+      if (!name) {
+        name = `${identity.firstName ?? ""} ${identity.lastName ?? ""}`.trim();
+      }
+      if (!name) {
+        name = "Anonymous";
+      }
+      const email = identity.emailAddresses?.[0]?.emailAddress ?? "unknown@example.com";
+      const imageUrl = identity.profileImageUrl ?? null;
     if (user !== null) {
       // If we've seen this identity before but the name has changed, patch the value.
-      if (user.name !== identity.name) {
-        await ctx.db.patch(user._id, { name: identity.name });
+      const patchData = {};
+      if (user.name !== name) patchData.name = name;
+      if (user.email !== email) patchData.email = email;
+      if (user.imageUrl !== imageUrl) patchData.imageUrl = imageUrl;
+
+      if (Object.keys(patchData).length > 0) {
+        await ctx.db.patch(user._id, patchData);
       }
       return user._id;
     }
     // If it's a new identity, create a new `User`.
     return await ctx.db.insert("users", {
-      name: identity.name ?? "Anonymous",
-      tokenIdentifier: identity.tokenIdentifier,
-      email: identity.email,
-      imageUrl: identity.imageUrl,
+      name,
+      email,
+      tokenIdentifier: identity.userId,
+      imageUrl,
     });
   },
 });
