@@ -25,7 +25,7 @@ const CategorySelector = ({categories, onChange}) => {
           const defaultId = String(defaultCategory.id);
           setSelectedCategory(defaultId);
             if(onChange){
-                onChange(defaultCategory.id);
+                onChange(defaultId);
             }
         }, 0)
       }
@@ -40,7 +40,7 @@ const CategorySelector = ({categories, onChange}) => {
         </SelectTrigger>
         <SelectContent>
             {categories.map((category)=> (
-                <SelectItem key={category.id} value={category.id}>
+                <SelectItem key={category.id} value={String(category.id)}>
                     <div className="flex items-center gap-2">
                         <span>{category.name}</span>
                     </div>
