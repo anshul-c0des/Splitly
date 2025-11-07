@@ -189,7 +189,7 @@ const SettlmentForm = ({ entityType, entityData, onSuccess }) => {
                     <Avatar className="h-6 w-6 mr-2">
                       <AvatarImage src={currentUser.imageUrl} />
                       <AvatarFallback>
-                        {currentUser.name.charAt(0)}
+                        {currentUser.name ? currentUser.name.charAt(0): "A"}
                       </AvatarFallback>
                     </Avatar>
                     <span>You paid {otherUser.name}</span>
@@ -203,7 +203,7 @@ const SettlmentForm = ({ entityType, entityData, onSuccess }) => {
                   <div className="flex items-center">
                     <Avatar className="h-6 w-6 mr-2">
                       <AvatarImage src={otherUser.imageUrl} />
-                      <AvatarFallback>{otherUser.name.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>{otherUser.name? otherUser.name.charAt(0): "A"}</AvatarFallback>
                     </Avatar>
                     <span>{otherUser.name} paid you</span>
                   </div>
@@ -278,7 +278,7 @@ const SettlmentForm = ({ entityType, entityData, onSuccess }) => {
                       <div className="flex items-center gap-2">
                         <Avatar className="h-8 w-8">
                           <AvatarImage src={member.imageUrl} />
-                          <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+                          <AvatarFallback>{member.name? member.name.charAt(0): "A"}</AvatarFallback>
                         </Avatar>
                         <span className="font-medium">{member.name}</span>
                       </div>
@@ -331,7 +331,7 @@ const SettlmentForm = ({ entityType, entityData, onSuccess }) => {
                         <Avatar className="h-6 w-6 mr-2">
                           <AvatarImage src={currentUser.imageUrl} />
                           <AvatarFallback>
-                            {currentUser.name.charAt(0)}
+                            {currentUser.name ? currentUser.name.charAt(0): "A"}
                           </AvatarFallback>
                         </Avatar>
                         <span>
@@ -364,7 +364,7 @@ const SettlmentForm = ({ entityType, entityData, onSuccess }) => {
                           <AvatarFallback>
                             {groupMembers
                               .find((m) => m.userId === selectedGroupMemberId)
-                              ?.name.charAt(0)}
+                              ?.name?.charAt(0) || "A"}
                           </AvatarFallback>
                         </Avatar>
                         <span>

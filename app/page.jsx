@@ -99,7 +99,7 @@ export default function Home() {
                     <Avatar>
                       <AvatarImage src={image} alt={name} />
                       <AvatarFallback className="uppercase">
-                        {name.charAt(0)}
+                        {name? name.charAt(0): "A"}
                       </AvatarFallback>
                     </Avatar>
                     <div className="text-left mt-2">

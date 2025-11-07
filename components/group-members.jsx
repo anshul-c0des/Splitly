@@ -28,7 +28,7 @@ const GroupMembers = ({members}) => {
             <div className="flex items-center gap-2">
               <Avatar className="h-8 w-8">
                 <AvatarImage src={member.imageUrl} />
-                <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+                <AvatarFallback>{member.name ? member.name.charAt(0) : "A"}</AvatarFallback>
               </Avatar>
               <div>
                 <div className="flex items-center gap-2">

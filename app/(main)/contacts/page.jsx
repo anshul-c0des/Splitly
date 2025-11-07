@@ -77,7 +77,7 @@ const ContactsPage = () => {
                             <Avatar className='h-10 w-10'>
                               <AvatarImage src={user.imageUrl} />
                               <AvatarFallback>
-                                {user.name.charAt(0)}
+                                {user.name? user.name.charAt(0): "A"}
                               </AvatarFallback>
                             </Avatar>
                             <div>
