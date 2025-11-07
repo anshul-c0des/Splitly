@@ -90,7 +90,7 @@ const ExpenseForm = ({type, onSuccess}) => {
         await createExpense.mutate({
             description: data.description,
             amount: amount,
-            category: data.category || "Other",
+            category: data.category !== undefined ? String(data.category) : "Other",
             date: data.date.getTime(),
             paidByUserId: data.paidByUserId,
             splitType: data.splitType,
