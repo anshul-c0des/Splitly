@@ -63,53 +63,63 @@ const ExpenseForm = ({type, onSuccess}) => {
   const amountValue = watch("amount");
   const paidByUserId = watch("paidByUserId");
 
-  const onSubmit = async(data) => {
+  const onSubmit = async (data) => {
     try {
-        const amount = parseFloat(data.amount);
-
-        const formattedSplits = splits.map((s) => ({
-            userId: s.userId,
-            amount: s.amount,
-            paid: s.userId=== data.paidByUserId
-        }));
-
-        const totalSplitAmount = formattedSplits.reduce(
-            (sum, split) => sum +split.amount,
-            0
-        );
-
-        const tolerance = 0.01;
-
-        if(Math.abs(totalSplitAmount-amount) > tolerance){
-            toast.error(`Split amounts don't add upto total, please adjust your splits.`);
-            return;
-        }
-
-        const groupId = type === 'individual' ? undefined : data.groupId;
-        const categoryId = data.category != null ? String(data.category) : "Other";
-
-        await createExpense.mutate({
-            description: data.description,
-            amount: amount,
-            category: categoryId,
-            date: data.date.getTime(),
-            paidByUserId: data.paidByUserId,
-            splitType: data.splitType,
-            splits: formattedSplits,
-            groupId
-        });
-
-        toast.success("Expense created successfully");
-        reset();
-
-        const otherParticipant = participants.find((p)=> p.id !== currentUser._id);
-        const otherUserId = otherParticipant?.id;
-
-        onSuccess(type === 'individual'? otherUserId : groupId)
+      console.log("Form data at submit:", data); // <-- Log all form data
+  
+      const amount = parseFloat(data.amount);
+      console.log("Parsed amount:", amount);
+  
+      const formattedSplits = splits.map((s) => ({
+        userId: s.userId,
+        amount: s.amount,
+        paid: s.userId === data.paidByUserId,
+      }));
+      console.log("Formatted splits:", formattedSplits);
+  
+      const totalSplitAmount = formattedSplits.reduce(
+        (sum, split) => sum + split.amount,
+        0
+      );
+      console.log("Total split amount:", totalSplitAmount);
+  
+      const tolerance = 0.01;
+      if (Math.abs(totalSplitAmount - amount) > tolerance) {
+        toast.error(`Split amounts don't add up to total, please adjust your splits.`);
+        return;
+      }
+  
+      const groupId = type === "individual" ? undefined : data.groupId;
+  
+      // <-- Log category before sending to Convex
+      console.log("Original category from form:", data.category);
+      const categoryId = data.category != null ? String(data.category) : "Other";
+      console.log("Category sent to Convex (string):", categoryId);
+  
+      await createExpense.mutate({
+        description: data.description,
+        amount: amount,
+        category: categoryId,
+        date: data.date.getTime(),
+        paidByUserId: data.paidByUserId,
+        splitType: data.splitType,
+        splits: formattedSplits,
+        groupId,
+      });
+  
+      toast.success("Expense created successfully");
+      reset();
+  
+      const otherParticipant = participants.find((p) => p.id !== currentUser._id);
+      const otherUserId = otherParticipant?.id;
+  
+      onSuccess(type === "individual" ? otherUserId : groupId);
     } catch (error) {
-        toast.error("Failed to create expense: "+error.message)
+      console.error("Error creating expense:", error); // <-- Detailed error log
+      toast.error("Failed to create expense: " + error.message);
     }
-  }
+  };
+  
 
     useEffect(() => {
     if(participants.length === 0 && currentUser){

@@ -141,7 +141,7 @@ export const createExpense = mutation({
         const expenseId = ctx.db.insert("expenses", {
             description: args.description,
             amount: args.amount,
-            category: args.category || "Other",
+            category: args.category != null ? String(args.category) : "Other",
             date: args.date,
             paidByUserId: args.paidByUserId,
             splitType: args.splitType,
