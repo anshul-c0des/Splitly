@@ -1,6 +1,6 @@
 # 💰 Splitly – Smart Bill Splitting Made Easy
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Now-blue?style=for-the-badge&logo=vercel)](https://splitly-cird9rb9l-anshuls-projects-ad041669.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Now-blue?style=for-the-badge&logo=vercel)](https://splitly-eight.vercel.app/)
 
 Splitly is a **real-time bill splitting web app** designed to simplify expense sharing among friends and groups. It combines **secure authentication, live syncing, and a sleek interface** for effortless group expense management.
 
@@ -25,5 +25,5 @@ Splitly is a **real-time bill splitting web app** designed to simplify expense s
 ---
 
 ## 🔗 Live Demo  
-👉 **[Try Splitly Now](https://splitly-cird9rb9l-anshuls-projects-ad041669.vercel.app/)**  
+👉 **[Try Splitly Now](https://splitly-eight.vercel.app/)**  
 
